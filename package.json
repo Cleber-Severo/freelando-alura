@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.10.6",
     "axios": "^1.3.5",
     "formik": "^2.4.5",
+    "formk": "^0.0.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-grid-system": "^8.1.9",
