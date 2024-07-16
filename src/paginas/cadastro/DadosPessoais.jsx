@@ -5,7 +5,7 @@ import { ListaSupensa } from "../../componentes/ListaSuspensa/ListaSuspensa"
 import { Col, Row } from "react-grid-system"
 import { Botao } from "../../componentes/Botao/Botao"
 import { Link } from "react-router-dom"
-import { Formik } from 'formik';
+import { Form, Formik } from 'formik';
 
 const estadosBrasileiros = [
   { "text": "Acre", "value": "AC" },
@@ -41,8 +41,8 @@ const DadosPessoais = () => {
     <Formik 
       initialValues={{ nome: '', estado: '', cidade: '', telefone: '', email: '', senha: '', confirmarSenha: '' }}
     >
-      {(formik) => (
-        <form>
+      {formik => (
+        <Form onSubmit={formik.handleSubmit} >
           <div style={{ textAlign: 'center' }}>
             <Tipografia variante="h1" componente="h1">
               Crie seu cadastro
@@ -55,11 +55,8 @@ const DadosPessoais = () => {
             <Col>
               <CampoTexto
                 titulo="Nome completo"
-                valor={formik.values.nome}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                tipo='text'
-                required
+                name='nome'
+                type='text'
               />
             </Col>
           </Row>
@@ -75,10 +72,8 @@ const DadosPessoais = () => {
             <Col lg={8} md={8} sm={8}>
               <CampoTexto
                 titulo="Cidade"
-                valor={formik.cidade}
-                onChange={formik.handleChange}
-                tipo='text'
-                required
+                name='cidade'
+                type='text'
               />
             </Col>
           </Row>
@@ -86,19 +81,15 @@ const DadosPessoais = () => {
             <Col lg={6} md={6} sm={6}>
               <CampoTexto
                 titulo="E-mail"
-                valor={formik.email}
-                onChange={formik.handleChange}
-                tipo='email'
-                required
+                name='email'
+                type='email'
               />
             </Col>
             <Col lg={6} md={6} sm={6}>
               <CampoTexto
                 titulo="Telefone"
-                valor={formik.telefone}
-                onChange={formik.handleChange}
-                tipo='tel'
-                required
+                name='telefone'
+                type='tel'
               />
             </Col>
           </Row>
@@ -106,19 +97,15 @@ const DadosPessoais = () => {
             <Col lg={6} md={6} sm={6}>
               <CampoTexto
                 titulo="Senha"
-                valor={formik.senha}
-                onChange={formik.handleChange}
-                tipo='password'
-                required
+                name='senha'
+                type='password'
               />
             </Col>
             <Col lg={6} md={6} sm={6}>
               <CampoTexto
                 titulo="Confirme sua senha"
-                valor={formik.confirmarSenha}
-                onChange={formik.handleChange}
-                tipo='password'
-                required
+                name='confirmarSenha'
+                type='password'
               />
             </Col>
           </Row>
@@ -140,7 +127,7 @@ const DadosPessoais = () => {
               </div>
             </Col>
           </Row>
-        </form>
+        </Form>
       )}
     </Formik>
 
