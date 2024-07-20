@@ -38,8 +38,15 @@ const estadosBrasileiros = [
   { "text": "Tocantins", "value": "TO" }
 ]
 
+const formatPhone = valor => {
+  if(!valor) return
+
+  const telefone = valor.replace('/\D/g', "")
+  return `(${telefone.slice(0, 2)} ${telefone.slice(2, 7)}-${telefone.slice(7)})` 
+}
+
 const schema = Yup.object().shape({
-  nome: Yup.string().required('Campo obrigatório').min(2, 'Nome inválido'),
+  nome: Yup.string().trim().lowercase().required('Campo obrigatório').min(2, 'Nome inválido'),
   cidade: Yup.string().required('Campo obrigatório').max(58, 'Digite uma cidade válida'),
   estado: Yup.string().required('Campo obrigatório'),
   email: Yup.string().email('Digite um e-mail válido').required('Campo obrigatório'),
@@ -47,6 +54,7 @@ const schema = Yup.object().shape({
   senha: Yup.string().required('Campo obrigatório'),
   confirmarSenha: Yup.string().required('Campo obrigatório').oneOf([Yup.ref('senha'), null], 'As senhas não conferem'),
   termos: Yup.boolean().oneOf([true], 'Você deve a aceitar os termos'),
+  nascimento: Yup.date().required('Campo obrigatório').max( new Date(),'Digite uma data válida'),
 })
 
 const DadosPessoais = () => {
@@ -59,10 +67,12 @@ const DadosPessoais = () => {
         telefone: '',
         email: '',
         senha: '',
-        confirmarSenha: ''
+        confirmarSenha: '',
+        nascimento: ''
       }}
       validationSchema={schema}
       onSubmit={(values) => {
+        console.log(formatPhone(values.telefone));
         console.log('dados do formulário', values)
       }}
     >
@@ -83,6 +93,9 @@ const DadosPessoais = () => {
                 name='nome'
                 type='text'
               />
+            </Col>
+            <Col>
+              <CampoTexto titulo={'Data de nascimento'} name='nascimento' type='date' />
             </Col>
           </Row>
           <Row>
@@ -157,7 +170,7 @@ const DadosPessoais = () => {
             <Col lg={6} md={6} sm={6}>
               <div style={{ textAlign: 'right' }}>
                 {/* <Link to='/cadastro/concluido'> */}
-                <Botao>
+                <Botao type={'submit'}>
                   Próxima
                 </Botao>
                 {/* </Link> */}
