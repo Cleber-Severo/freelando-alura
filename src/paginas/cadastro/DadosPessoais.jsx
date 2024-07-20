@@ -6,6 +6,7 @@ import { Col, Row } from "react-grid-system"
 import { Botao } from "../../componentes/Botao/Botao"
 import { Link } from "react-router-dom"
 import { Field, Form, Formik } from 'formik';
+import * as Yup from 'yup'
 
 const estadosBrasileiros = [
   { "text": "Acre", "value": "AC" },
@@ -36,6 +37,18 @@ const estadosBrasileiros = [
   { "text": "Sergipe", "value": "SE" },
   { "text": "Tocantins", "value": "TO" }
 ]
+
+const schema = Yup.object().shape({
+  nome: Yup.string().required('Campo obrigatório').min(2, 'Nome inválido'),
+  cidade: Yup.string().required('Campo obrigatório').max(58, 'Digite uma cidade válida'),
+  estado: Yup.string().required('Campo obrigatório'),
+  email: Yup.string().email('Digite um e-mail válido').required('Campo obrigatório'),
+  telefone: Yup.string().required('Campo obrigatório').matches(/^\d{11}$/i, 'Número de telefone inválido'), 
+  senha: Yup.string().required('Campo obrigatório'),
+  confirmarSenha: Yup.string().required('Campo obrigatório').oneOf([Yup.ref('senha'), null], 'As senhas não conferem'),
+  termos: Yup.boolean().oneOf([true], 'Você deve a aceitar os termos'),
+})
+
 const DadosPessoais = () => {
   return (
     <Formik 
@@ -48,37 +61,7 @@ const DadosPessoais = () => {
         senha: '',
         confirmarSenha: ''
       }}
-      validate={(values) => {
-        const errors = {};
-        if (!values.nome) {
-          errors.nome = 'Campo obrigatório'
-        }
-        if (!values.estado) {
-          errors.estado = 'Campo obrigatório';
-        }
-        if (!values.cidade) {
-          errors.cidade = 'Campo obrigatório';
-        }
-        if (!values.senha) {
-          errors.senha = 'Campo obrigatório';
-        }
-        if (!values.telefone) {
-          errors.telefone = 'Campo obrigatório'
-        } else if (!/^\d{11}$/i.test(values.telefone)) {
-          errors.telefone = 'Número de telefone inválido'
-        }
-        if (!values.email) {
-          errors.email = 'Campo obrigatório'
-        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-          errors.email = 'Email inválido'
-        }
-        if (!values.confirmarSenha) {
-          errors.confirmarSenha = 'Campo obrigatório'
-        } else if (values.senha != values.confirmarSenha) {
-          errors.confirmarSenha = 'As senhas não conferem'
-        }
-        return errors;
-      }}
+      validationSchema={schema}
       onSubmit={(values) => {
         console.log('dados do formulário', values)
       }}
@@ -100,15 +83,6 @@ const DadosPessoais = () => {
                 name='nome'
                 type='text'
               />
-            </Col>
-            <Col>
-              <Field type='date' />
-            </Col>
-            <Col>
-              <Field type='datetime-local' />
-            </Col>
-            <Col>
-              <Field type='text' />
             </Col>
           </Row>
           <Row>
@@ -157,6 +131,20 @@ const DadosPessoais = () => {
                 type='password'
               />
             </Col>
+          </Row>
+          <Row>
+            <label htmlFor="">
+              <Field type='checkbox' name='termos' />
+               Aceito os termos e condições
+            </label>
+            { formik.errors.termos 
+              ? (
+                <div style={{ color: 'red', marginTop: '4px' }}>
+                  {formik.errors.termos}
+                </div>
+              )
+              : ''
+            }
           </Row>
           <Row>
             <Col lg={6} md={6} sm={6}>
