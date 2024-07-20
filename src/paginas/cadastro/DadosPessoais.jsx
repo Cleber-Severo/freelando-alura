@@ -5,7 +5,7 @@ import { ListaSupensa } from "../../componentes/ListaSuspensa/ListaSuspensa"
 import { Col, Row } from "react-grid-system"
 import { Botao } from "../../componentes/Botao/Botao"
 import { Link } from "react-router-dom"
-import { Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 
 const estadosBrasileiros = [
   { "text": "Acre", "value": "AC" },
@@ -100,6 +100,15 @@ const DadosPessoais = () => {
                 name='nome'
                 type='text'
               />
+            </Col>
+            <Col>
+              <Field type='date' />
+            </Col>
+            <Col>
+              <Field type='datetime-local' />
+            </Col>
+            <Col>
+              <Field type='text' />
             </Col>
           </Row>
           <Row>

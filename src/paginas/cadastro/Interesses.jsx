@@ -4,6 +4,7 @@ import { Col, Row } from "react-grid-system"
 import { Botao } from "../../componentes/Botao/Botao"
 import { Link } from "react-router-dom"
 import { useState } from "react"
+import { Form, Formik } from "formik"
 
 const opcoes = [
     {
@@ -33,10 +34,9 @@ const opcoes = [
 ]
 
 const Interesses = () => {
-    const [interesse, setInteresse] = useState('')
 
-
-    return (<>
+    return (
+    <>
         <div style={{ textAlign: 'center' }}>
             <Tipografia variante="h1" componente="h1">
                 Crie seu cadastro
@@ -45,11 +45,11 @@ const Interesses = () => {
                 Qual a área de interesse?
             </Tipografia>
         </div>
-        <GrupoRadio
-            opcoes={opcoes}
-            valor={interesse}
-            onChange={setInteresse}
-        />
+        <Formik initialValues={{ interesse: '' }} >
+                <Form>
+                        <GrupoRadio opcoes={opcoes} />
+                </Form>
+        </Formik>
         <Row>
             <Col lg={6} md={6} sm={6}>
                 <Link to="/cadastro">
@@ -68,7 +68,8 @@ const Interesses = () => {
                 </div>
             </Col>
         </Row>
-    </>)
+    </>
+    )
 }
 
 export default Interesses
